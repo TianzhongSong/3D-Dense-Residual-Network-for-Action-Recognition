@@ -30,15 +30,14 @@ def c3d_model():
                activation='relu', kernel_regularizer=l2(weight_decay))(x)
     x = MaxPool3D((2, 2, 2), strides=(2, 2, 2), padding='same')(x)
 
-    x4 = Flatten()(x)
-    x3 = Dense(2048, activation='relu', kernel_regularizer=l2(weight_decay))(x4)
-    # x = Dropout(0.5)(x)
-    x2 = Dense(2048, activation='relu', kernel_regularizer=l2(weight_decay))(x3)
-    # x = Dropout(0.5)(x)
-    x1 = Dense(nb_classes, kernel_regularizer=l2(weight_decay))(x2)
-    # x = Activation('softmax')(x)
-    out = concatenate([x1, x2, x3, x4], axis=-1)
-    model = Model(inputs, out)
+    x = Flatten()(x)
+    x = Dense(2048, activation='relu', kernel_regularizer=l2(weight_decay))(x)
+    x = Dropout(0.5)(x)
+    x = Dense(2048, activation='relu', kernel_regularizer=l2(weight_decay))(x)
+    x = Dropout(0.5)(x)
+    x = Dense(nb_classes, kernel_regularizer=l2(weight_decay))(x)
+    x = Activation('softmax')(x)
+    model = Model(inputs, x)
     return model
 
 
