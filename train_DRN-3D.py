@@ -65,7 +65,7 @@ def process_batch(batch_id, root_path, clip_length=16, train=True):
             crop_x = random.randint(0, 15)
             crop_y = random.randint(0, 58)
             is_flip = random.randint(0, 1)
-            for j in range(clip_length//2):
+            for j in range(clip_length):
                 if j % 2 == 0:
                     img = imgs[symbol + j]
                     image = cv2.imread(root_path + path + '/' + img)
@@ -73,16 +73,16 @@ def process_batch(batch_id, root_path, clip_length=16, train=True):
                     image = cv2.resize(image, (171, 128))
                     if is_flip == 1:
                         image = cv2.flip(image, 1)
-                    batch[i][j][:][:][:] = image[crop_x:crop_x + 112, crop_y:crop_y + 112, :]
+                    batch[i][int(j/2)][:][:][:] = image[crop_x:crop_x + 112, crop_y:crop_y + 112, :]
             labels[i] = label
         else:
-            for j in range(clip_length//2):
+            for j in range(clip_length):
                 if j % 2 == 0:
                     img = imgs[symbol + j]
                     image = cv2.imread(root_path + path + '/' + img)
                     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                     image = cv2.resize(image, (171, 128))
-                    batch[i][j][:][:][:] = image[8:120, 30:142, :]
+                    batch[i][int(j/2)][:][:][:] = image[8:120, 30:142, :]
             labels[i] = label
     return batch, labels
 
