@@ -66,23 +66,41 @@ def process_batch(batch_id, root_path, clip_length=16, train=True):
             crop_y = random.randint(0, 58)
             is_flip = random.randint(0, 1)
             for j in range(clip_length):
-                if j % 2 == 0:
-                    img = imgs[symbol + j]
-                    image = cv2.imread(root_path + path + '/' + img)
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                    image = cv2.resize(image, (171, 128))
-                    if is_flip == 1:
-                        image = cv2.flip(image, 1)
-                    batch[i][int(j/2)][:][:][:] = image[crop_x:crop_x + 112, crop_y:crop_y + 112, :]
+                if clip_length == 16:
+                    if j % 2 == 0:
+                        img = imgs[symbol + j]
+                        image = cv2.imread(root_path + path + '/' + img)
+                        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        image = cv2.resize(image, (171, 128))
+                        if is_flip == 1:
+                            image = cv2.flip(image, 1)
+                        batch[i][int(j/2)][:][:][:] = image[crop_x:crop_x + 112, crop_y:crop_y + 112, :]
+                elif clip_length == 24:
+                    if j % 3 == 0:
+                        img = imgs[symbol + j]
+                        image = cv2.imread(root_path + path + '/' + img)
+                        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        image = cv2.resize(image, (171, 128))
+                        if is_flip == 1:
+                            image = cv2.flip(image, 1)
+                        batch[i][int(j/3)][:][:][:] = image[crop_x:crop_x + 112, crop_y:crop_y + 112, :]
             labels[i] = label
         else:
             for j in range(clip_length):
-                if j % 2 == 0:
-                    img = imgs[symbol + j]
-                    image = cv2.imread(root_path + path + '/' + img)
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                    image = cv2.resize(image, (171, 128))
-                    batch[i][int(j/2)][:][:][:] = image[8:120, 30:142, :]
+                if clip_length == 16:
+                    if j % 2 == 0:
+                        img = imgs[symbol + j]
+                        image = cv2.imread(root_path + path + '/' + img)
+                        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        image = cv2.resize(image, (171, 128))
+                        batch[i][int(j/2)][:][:][:] = image[8:120, 30:142, :]
+                elif clip_length == 24:
+                    if j % 3 == 0:
+                        img = imgs[symbol + j]
+                        image = cv2.imread(root_path + path + '/' + img)
+                        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        image = cv2.resize(image, (171, 128))
+                        batch[i][int(j/3)][:][:][:] = image[8:120, 30:142, :]
             labels[i] = label
     return batch, labels
 
@@ -112,7 +130,7 @@ def generator_train_batch(train_txt, batch_size, num_classes, img_path):
         for i in range(num // batch_size):
             a = i * batch_size
             b = (i + 1) * batch_size
-            x_train, x_labels = process_batch(new_line[a:b], img_path)
+            x_train, x_labels = process_batch(new_line[a:b], img_path, clip_length=args.clip_length)
             x = preprocess(x_train)
             y = np_utils.to_categorical(np.array(x_labels), num_classes)
             yield x, y
@@ -131,7 +149,7 @@ def generator_val_batch(val_txt, batch_size, num_classes, img_path):
         for i in range(num // batch_size):
             a = i * batch_size
             b = (i + 1) * batch_size
-            y_test, y_labels = process_batch(new_line[a:b], img_path, train=False)
+            y_test, y_labels = process_batch(new_line[a:b], img_path, clip_length=args.clip_length, train=False)
             x = preprocess(y_test)
             y = np_utils.to_categorical(np.array(y_labels), num_classes)
             yield x, y
@@ -176,6 +194,9 @@ if __name__ == '__main__':
     parser.add_argument('--lr', type=float, default=0.005, help='the initial learning rate')
     parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--drop-rate', type=float, default=0.0)
+    parser.add_argument('--clip-length', type=int, default=16, help='support 16 and 24')
     parser.add_argument('--image-path', type=str, default='', help='image path')
     args = parser.parse_args()
+    if args.clip_length not in [16, 24]:
+        raise ValueError('clip_length must be 16 or 24!')
     main()
