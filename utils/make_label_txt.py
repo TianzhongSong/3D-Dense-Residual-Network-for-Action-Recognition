@@ -23,6 +23,8 @@ if __name__ == '__main__':
         label = item.split(' ')[-1]
         images = os.listdir(image_path)
         nb = len(images) // clip_length
+        if len(images) % clip_length < 8:
+            nb -= 1
         for i in range(nb):
             f3.write(name + ' ' + str(i*clip_length+1)+' '+label)
 
@@ -32,6 +34,8 @@ if __name__ == '__main__':
         label = item.split(' ')[-1]
         images = os.listdir(image_path)
         nb = len(images) // clip_length
+        if len(images) % clip_length < 8:
+            nb -= 1
         for i in range(nb):
             f4.write(name + ' ' + str(i*clip_length+1)+' '+label)
 
