@@ -23,7 +23,7 @@ step3 -- generating label txt for converted images
 
 ## Training
 
-    python train_DRN-3D.py --lr=0.005 --batch-size=16 --drop-rate=0.2 --image-path='the path of saved images'
+    python train_DRN-3D.py --lr=0.005 --batch-size=16 --drop-rate=0.2 ----image-path='the path of saved images'
 
 ## Todo
 
