@@ -30,14 +30,15 @@ def c3d_model():
                activation='relu', kernel_regularizer=l2(weight_decay))(x)
     x = MaxPool3D((2, 2, 2), strides=(2, 2, 2), padding='same')(x)
 
-    x = Flatten()(x)
-    x = Dense(2048, activation='relu', kernel_regularizer=l2(weight_decay))(x)
-    x = Dropout(0.5)(x)
-    x = Dense(2048, activation='relu', kernel_regularizer=l2(weight_decay))(x)
-    x = Dropout(0.5)(x)
-    x = Dense(nb_classes, kernel_regularizer=l2(weight_decay))(x)
-    x = Activation('softmax')(x)
-    model = Model(inputs, x)
+    x4 = Flatten()(x)
+    x3 = Dense(2048, activation='relu', kernel_regularizer=l2(weight_decay))(x4)
+    # x = Dropout(0.5)(x)
+    x2 = Dense(2048, activation='relu', kernel_regularizer=l2(weight_decay))(x3)
+    # x = Dropout(0.5)(x)
+    x1 = Dense(nb_classes, kernel_regularizer=l2(weight_decay))(x2)
+    # x = Activation('softmax')(x)
+    out = concatenate([x1, x2, x3, x4], axis=-1)
+    model = Model(inputs, out)
     return model
 
 
@@ -78,7 +79,7 @@ def denseblock(x, growth_rate, strides=(1, 1, 1), internal_layers=4,
     return x
 
 
-def Residual_DenseNet(nb_classes, input_shape, weight_decay=0.005, dropout_rate=0.2):
+def Residual_DenseNet(nb_classes, input_shape, weight_decay=0.005, dropout_rate=0.2, extract_feat=False):
     internal_layers = 3
 
     model_input = Input(shape=input_shape)
@@ -161,11 +162,11 @@ def Residual_DenseNet(nb_classes, input_shape, weight_decay=0.005, dropout_rate=
     x = Activation('relu')(x)
 
     x = GlobalAveragePooling3D()(x)
-
-    x = Dense(nb_classes,
-              activation='softmax',
-              kernel_regularizer=l2(weight_decay),
-              bias_regularizer=l2(weight_decay))(x)
+    if not extract_feat:
+        x = Dense(nb_classes,
+                  activation='softmax',
+                  kernel_regularizer=l2(weight_decay),
+                  bias_regularizer=l2(weight_decay))(x)
 
     DRN = Model(input=[model_input], output=[x], name="DRN")
 
