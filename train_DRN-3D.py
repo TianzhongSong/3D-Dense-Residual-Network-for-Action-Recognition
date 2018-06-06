@@ -51,7 +51,7 @@ def save_history(history, result_dir):
         fp.close()
 
 
-def process_batch(batch_id, root_path, clip_length=16, train=True):
+def process_batch(batch_id, root_path, clip_length=16, random_length=False, train=True):
     batch_size = len(batch_id)
     batch = np.zeros((batch_size, 8, 112, 112, 3), dtype=np.float32)
     labels = np.zeros(batch_size, dtype='int')
@@ -65,6 +65,12 @@ def process_batch(batch_id, root_path, clip_length=16, train=True):
             crop_x = random.randint(0, 15)
             crop_y = random.randint(0, 58)
             is_flip = random.randint(0, 1)
+            if random_length:
+                is_16_24 = random.randint(0, 1)
+                if is_16_24 == 0:
+                    clip_length = 16
+                else:
+                    clip_length = 24
             for j in range(clip_length):
                 if clip_length == 16:
                     if j % 2 == 0:
@@ -130,7 +136,7 @@ def generator_train_batch(train_txt, batch_size, num_classes, img_path):
         for i in range(num // batch_size):
             a = i * batch_size
             b = (i + 1) * batch_size
-            x_train, x_labels = process_batch(new_line[a:b], img_path, clip_length=args.clip_length)
+            x_train, x_labels = process_batch(new_line[a:b], img_path, clip_length=args.clip_length, random_length=args.random_length)
             x = preprocess(x_train)
             y = np_utils.to_categorical(np.array(x_labels), num_classes)
             yield x, y
@@ -149,7 +155,7 @@ def generator_val_batch(val_txt, batch_size, num_classes, img_path):
         for i in range(num // batch_size):
             a = i * batch_size
             b = (i + 1) * batch_size
-            y_test, y_labels = process_batch(new_line[a:b], img_path, clip_length=args.clip_length, train=False)
+            y_test, y_labels = process_batch(new_line[a:b], img_path, clip_length=args.clip_length,random_length=args.random_length, train=False)
             x = preprocess(y_test)
             y = np_utils.to_categorical(np.array(y_labels), num_classes)
             yield x, y
@@ -195,6 +201,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--drop-rate', type=float, default=0.0)
     parser.add_argument('--clip-length', type=int, default=16, help='support 16 and 24')
+    parser.add_argument('--random-length', type=bool, default=False)
     parser.add_argument('--image-path', type=str, default='', help='image path')
     args = parser.parse_args()
     if args.clip_length not in [16, 24]:
