@@ -64,7 +64,7 @@ Clips are resized to have a frame size of 128 × 171. On training, I randomly cr
 
 ## Results
 
-We use only a single center crop per clip, and pass it through the network to make the clip prediction. For video predictions, we average clip predictions of some clips which are evenly extracted from the video (no overlap).
+I use only a single center crop per clip, and pass it through the network to make the clip prediction. For video predictions, I average clip predictions of some clips which are evenly extracted from the video (no overlap).
 
 Evaluate video
 
