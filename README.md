@@ -48,6 +48,8 @@ During trianing, support three types of length for input clips. check this [scri
 
 (2) clip length = 24. I take one sample each three frames.
 
+![24f](https://github.com/TianzhongSong/DRN-3D/blob/master/imgs/24f.jpg)
+
 (3) mixed clip lengths. First, I randomly choose 16 or 24 clip length with 50% probability, then take one sample each two or three frames correspondingly. 
 
 Clips are resized to have a frame size of 128 × 171. On training, I randomly crop input clips into 112×112×8 crops for spatial and temporal jittering. I also horizontally ﬂip them with 50% probability. 
