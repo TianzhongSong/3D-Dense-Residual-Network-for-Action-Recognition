@@ -3,7 +3,7 @@ import argparse
 from utils.drn import *
 from keras.optimizers import SGD, Adam
 from keras.utils import np_utils
-from utils.schedules import onetenth_4_8_12
+from utils.schedules import onetenth_10_15_20
 import numpy as np
 import random
 import cv2
@@ -174,7 +174,7 @@ def main():
     val_samples = len(lines)
 
     num_classes = 101
-    epochs = 16
+    epochs = 25
 
     model = Residual_DenseNet(num_classes, (112, 112, 8, 3), dropout_rate=args.drop_rate)
     sgd = SGD(lr=args.lr, momentum=0.9, nesterov=True)
@@ -183,7 +183,7 @@ def main():
     history = model.fit_generator(generator_train_batch(train_file, args.batch_size, num_classes, args.img_path),
                                   steps_per_epoch=train_samples // args.batch_size,
                                   epochs=epochs,
-                                  callbacks=[onetenth_4_8_12(args.lr)],
+                                  callbacks=[onetenth_10_15_20(args.lr)],
                                   validation_data=generator_val_batch(test_file,
                                                                       args.batch_size, num_classes, args.img_path),
                                   validation_steps=val_samples // args.batch_size,
@@ -197,7 +197,7 @@ def main():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='command for training 3D-DRN')
-    parser.add_argument('--lr', type=float, default=0.005, help='the initial learning rate')
+    parser.add_argument('--lr', type=float, default=0.01, help='the initial learning rate')
     parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--drop-rate', type=float, default=0.0)
     parser.add_argument('--clip-length', type=int, default=16, help='support 16 and 24')
