@@ -66,7 +66,7 @@ Clips are resized to have a frame size of 128 × 171. On training, I randomly cr
 
 I use only a single center crop per clip, and pass it through the network to make the clip prediction. For video predictions, I average clip predictions of some clips which are evenly extracted from the video (no overlap).
 
-Evaluate video
+Evaluate video (pre-trained weight files are in 'results' directory )
 
     python evaluate_video.py
 
@@ -107,7 +107,6 @@ Extract video feature and evaluate them
     python evaluate_hmdb.py
 
 #### The accuracy of HMDB51 is 56%
-
 
 -----------------------------------------------------------------------------
 
