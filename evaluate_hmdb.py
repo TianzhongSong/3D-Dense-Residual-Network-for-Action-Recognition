@@ -83,7 +83,8 @@ def main():
     feat = feat[index]
     feat = normalize(feat, norm='l2')
     labels = labels[index]
-    svc(feat[0:len(feat) * 0.8], labels[0:len(feat) * 0.8], feat[len(feat) * 0.8:], labels[len(feat) * 0.8:])
+    train_num = int(len(feat) * 0.8)
+    svc(feat[0:train_num], labels[0:train_num], feat[train_num:], labels[train_num:])
 
 
 if __name__ == '__main__':
