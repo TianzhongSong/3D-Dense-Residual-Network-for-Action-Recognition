@@ -18,6 +18,12 @@ Inspired by [Residual Dense Network for Image Super-Resolution](https://github.c
 
                                     fig2 3D dense residual network
 
+The parameters and model size of 3D-DRN as follow.
+
+|parameters    | model size    |
+| :-----------: |:------------:|
+| 1.5M           | 6.3MB       |
+
 ## Requirements
 
     opencv3.2
@@ -60,11 +66,50 @@ Clips are resized to have a frame size of 128 × 171. On training, I randomly cr
 
 We use only a single center crop per clip, and pass it through the network to make the clip prediction. For video predictions, we average clip predictions of some clips which are evenly extracted from the video (no overlap).
 
+Evaluate video
+
+    python evaluate_video.py
+
+Results on UCF101
+
 |clip length    | clip acc      | video acc  |
-| :-----------: |:-------------:| :----------:|
+| :-----------: |:-------------:| :---------:|
 | 16            | 58.41%        | 62.80%     |
-| 24            | 59.47%        |   -        |
-| 16, 24 mixed  | 59.60%        |    -       |
+| 24            | 59.47%        | 64.16%     |
+| 16, 24 mixed  | 59.60%        | 64.76%     |
+    
+![16f acc](https://github.com/TianzhongSong/DRN-3D/blob/master/results/drn-16/model_accuracy.png)
+
+                        fig3 clip acc of length=16 during training
+
+![16f loss](https://github.com/TianzhongSong/DRN-3D/blob/master/results/drn-16/model_loss.png)
+
+                        fig4 clip loss of length=16 during training
+
+#### predict video frame by frame and display result
+
+    python video_demo.py
+    
+-----------------------------------------------------------------------------
+
+Extract video feature for [HMDB51](http://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/) with pre-trained model
+
+Firstly, convert video to image
+
+    python utils/video2img_hmdb.py
+
+Secondly, generate label txt
+
+    python utils/hmdb_label.py
+
+Extract video feature and evaluate them
+
+    python evaluate_hmdb.py
+
+#### The accuracy of HMDB51 is 56%
+
+
+-----------------------------------------------------------------------------
 
 ## Reference
 
