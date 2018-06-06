@@ -7,6 +7,12 @@ def onetenth_4_8_12(lr):
     return Step(steps, lrs)
 
 
+def onetenth_10_15_20(lr):
+    steps = [10, 15, 20]
+    lrs = [lr, lr/10, lr/100,lr/1000]
+    return Step(steps, lrs)
+
+
 def onetenth_50_75(lr):
     steps = [25, 40]
     lrs = [lr, lr/10, lr/100]
