@@ -60,7 +60,7 @@ During trianing, support three types of length for input clips. check this [scri
 
 Clips are resized to have a frame size of 128 × 171. On training, I randomly crop input clips into 112×112×8 crops for spatial and temporal jittering. I also horizontally ﬂip them with 50% probability. 
 
-    python train_DRN-3D.py --lr=0.005 --batch-size=16 --drop-rate=0.2 --clip-length=16 --random-length=False --image-path='the path of saved images'
+    python train_DRN-3D.py --lr=0.01 --batch-size=16 --drop-rate=0.2 --clip-length=16 --random-length=False --image-path='the path of saved images'
 
 ## Results
 
