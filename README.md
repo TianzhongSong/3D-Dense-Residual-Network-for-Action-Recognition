@@ -90,6 +90,7 @@ Results on UCF101
 
     python video_demo.py
     
+![ds](https://github.com/TianzhongSong/C3D-keras/blob/master/videos/out.gif)
 -----------------------------------------------------------------------------
 
 #### Extract video feature for [HMDB51](http://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/) with pre-trained model
