@@ -2,8 +2,6 @@
 
 3D dense residual network for action recognition
 
-## No paper, just an experiment! 
-
 Limited by hardware(I only have one GTX1080 Ti) and network(CN), I did not do further experiments with Large datastes, e.g [Kinetics](https://deepmind.com/research/open-source/open-source-datasets/kinetics/), [sports-8M](https://research.google.com/youtube8m/explore.html). 
 
 ## 3D dense residual network
