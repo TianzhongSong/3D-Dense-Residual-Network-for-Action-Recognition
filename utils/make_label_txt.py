@@ -6,14 +6,14 @@ if __name__ == '__main__':
     parser.add_argument('--image-path', type=str, default='', help='image path')
     args = parser.parse_args()
 
-    f1 = open('../ucfTrainTestlist/train_file.txt', ' r')
-    f2 = open('../ucfTrainTestlist/test_file.txt', ' r')
+    f1 = open('ucfTrainTestlist/train_file.txt', ' r')
+    f2 = open('ucfTrainTestlist/test_file.txt', ' r')
 
     train_list = f1.readlines()
     test_list = f2.readlines()
 
-    f3 = open('../train_list.txt', 'w')
-    f4 = open('../test_list.txt', 'w')
+    f3 = open('train_list.txt', 'w')
+    f4 = open('test_list.txt', 'w')
 
     clip_length = 16
 
