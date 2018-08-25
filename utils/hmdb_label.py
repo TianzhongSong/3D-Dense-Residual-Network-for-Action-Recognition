@@ -4,7 +4,7 @@ img_path = '/home/deep/datasets/hmdb/'
 
 clip_length = 16
 
-f = open('../ucfTrainTestlist/hmdb.txt', 'w')
+f = open('ucfTrainTestlist/hmdb.txt', 'w')
 
 actions = os.listdir(img_path)
 actions.sort(key=str.lower)
