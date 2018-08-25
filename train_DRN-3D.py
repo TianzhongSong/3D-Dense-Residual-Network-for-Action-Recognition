@@ -180,12 +180,12 @@ def main():
     sgd = SGD(lr=args.lr, momentum=0.9, nesterov=True)
     model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
     model.summary()
-    history = model.fit_generator(generator_train_batch(train_file, args.batch_size, num_classes, args.img_path),
+    history = model.fit_generator(generator_train_batch(train_file, args.batch_size, num_classes, args.image_path),
                                   steps_per_epoch=train_samples // args.batch_size,
                                   epochs=epochs,
                                   callbacks=[onetenth_10_15_20(args.lr)],
                                   validation_data=generator_val_batch(test_file,
-                                                                      args.batch_size, num_classes, args.img_path),
+                                                                      args.batch_size, num_classes, args.image_path),
                                   validation_steps=val_samples // args.batch_size,
                                   verbose=1)
     if not os.path.exists('results/'):
